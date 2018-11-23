@@ -9,11 +9,11 @@
     ```
 3. POJO对象与表映射
 
-    1. 主键必须加上`@Id`注解,且属性名必须为id;
-    2. `@Table`为表名
-    3. `@Column` 为列名
-    4. `@Ignore`不映射
-    5. `@JavaType`设置Java类型
+    1. 必填 主键必须加上`@Id`注解,且属性名必须为id
+    2. 非必填 `@Table`为表名
+    3. 非必填 `@Column` 为列名
+    4. 非必填 `@Ignore`不映射
+    5. 非必填 `@JavaType`设置Java类型
     
     ```java
         @Table("t_user")
