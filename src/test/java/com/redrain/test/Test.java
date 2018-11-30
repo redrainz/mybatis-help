@@ -36,31 +36,12 @@ public class Test {
         user.setUsername("aassa");
         user.setPassword("bbb");
         user.setTime(new Date());
+        user.setUserId("1");
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         int a = userMapper.insertObj(user);
         sqlSession.commit();
         Assert.assertNotNull(user.getId());
-
-        /*    StatisticFinanceInfo info=new StatisticFinanceInfo();
-            info.setCompanyName("ssss");
-            info.setCompanyId(12);
-            info.setAddTime(new Date());
-            info.setFund(new BigDecimal(12.231321));
-            info.setDelFlag(true);
-            SqlSession sqlSession = sqlSessionFactory.openSession();
-            StatisticFinanceInfoMapper statisticFinanceInfoMapper=sqlSession.getMapper(StatisticFinanceInfoMapper.class);
-            statisticFinanceInfoMapper.insert(info);*/
-
-/*
-        SqlSession sqlSession1 = sqlSessionFactory.openSession();
-        UserMapper userMapper1 = sqlSession1.getMapper(UserMapper.class);
-        Map<Integer,User> map =userMapper1.get(1);*/
-       /* SqlSessionManager sqlSessionManager=SqlSessionManager.newInstance(inputStream);
-        sqlSessionManager.startManagedSession();
-       sqlSessionManager.insert("mapper.UserMapper.insert",user);
-       sqlSessionManager.commit();*/
-
         }
 
     @org.junit.Test

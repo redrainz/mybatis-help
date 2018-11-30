@@ -23,6 +23,8 @@ public class User {
     @Ignore
     private Date time1;
 
+    private String userId;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class User {
 
     public void setTime1(Date time1) {
         this.time1 = time1;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

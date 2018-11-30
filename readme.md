@@ -1,17 +1,35 @@
 ## mybatis-help
 
-1. 使用要求
-    1. mybatis:3.4.0+
-    2. mybatis-spring:1.3.0+
+1. 使用场景
+    1. mybatis:3.3.0
+    2. xml与mapper混合使用
 2. maven引入
      ```xml
        <dependency>
        <groupId>com.redrain</groupId>
        <artifactId>mybatis-help</artifactId>
-       <version>1.0.0-SNAPSHOT</version>
+       <version>0.1.1-SNAPSHOT</version>
        </dependency> 
      ```  
 3. 使用mybatis的mapper接口方法
+     1. mapper.xml中namespace为mapper全限定类名
+     2. mapper.xml中必须有BaseResultMap的resultMap
+     ```xml
+     <mapper namespace="com.redrain.UserMapper" >
+     <resultMap id="BaseResultMap" type="com.redrain.test.User" >
+     <id column="id" property="id" jdbcType="INTEGER" />
+     <result column="name" property="name" jdbcType="VARCHAR" />
+     <result column="password" property="password" jdbcType="VARCHAR" />
+     </resultMap>
+     ...
+     </mapper>
+     ```
+     ```xml
+     <mapper namespace="com.redrain.UserMapper" >
+       <resultMap id="BaseResultMap" type="com.redrain.test.User" />
+     ...
+     </mapper>
+     ```
 4. mapper 接口继承 
     ```java
     public interface UserMapper extends BaseMapper<User> {

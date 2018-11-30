@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
@@ -43,15 +44,19 @@ public interface BaseMapper<T> {
     Integer deleteObjByParams(T param);
 
     @SelectProvider(type = SelectHelper.class, method = "selectObjById")
+    @ResultMap("BaseResultMap")
     T selectObjById(T param);
 
     @SelectProvider(type = SelectHelper.class, method = "selectObjByParams")
+    @ResultMap("BaseResultMap")
     T selectObjByParams(T param);
 
     @SelectProvider(type = SelectHelper.class, method = "selectListByParams")
+    @ResultMap("BaseResultMap")
     List<T> selectListByParams(T param);
 
     @SelectProvider(type = SelectHelper.class, method = "selectListByParamsPages")
+    @ResultMap("BaseResultMap")
     List<T> selectListByParamsPages(@Param("param") T param, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
 }
