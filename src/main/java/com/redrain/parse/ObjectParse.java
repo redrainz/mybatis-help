@@ -35,6 +35,7 @@ public class ObjectParse {
     private static void parsePropertyName(Class clazz, ObjectEntity objectEntity) throws Exception {
         Field[] fields = clazz.getDeclaredFields();
         if (null != fields && fields.length != 0) {
+            boolean hasId = false;
             for (Field field : fields) {
                 Ignore ignoreAnnotation = field.getAnnotation(Ignore.class);
                 Column columnAnnotation = field.getAnnotation(Column.class);
@@ -53,7 +54,11 @@ public class ObjectParse {
                     javaType = ParseUtil.getProperty(javaTypeAnnotation.value(), javaType);
                 }
                 if (null != idAnnotation) {
+                    if (hasId) {
+                        throw new Exception("不支持两个主键");
+                    }
                     id = true;
+                    hasId = true;
                     columnName = ParseUtil.getProperty(idAnnotation.value(), columnName);
                     jdbcType = ParseUtil.getProperty(idAnnotation.jdbcType(), jdbcType);
                 } else if (null != columnAnnotation) {
@@ -62,6 +67,17 @@ public class ObjectParse {
                 }
                 PropertyEntity propertyEntity = new PropertyEntity(columnName, jdbcType, javaType, propertyName, id);
                 objectEntity.getPropertyEntities().add(propertyEntity);
+            }
+            if (!hasId) {
+                for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
+                    if ("id".equals(propertyEntity.getPropertyName())) {
+                        propertyEntity.setId(true);
+                        hasId = true;
+                    }
+                }
+            }
+            if (!hasId) {
+                throw new Exception("主键不能为空");
             }
         }
 

@@ -14,7 +14,7 @@ import java.util.Date;
  * @description TODO
  */
 public class User {
-    @Id()
+    //@Id()
     private Integer id;
     @Column(jdbcType = "varchar")
     private String username;
