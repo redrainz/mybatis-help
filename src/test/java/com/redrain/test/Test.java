@@ -1,3 +1,4 @@
+/*
 package com.redrain.test;
 
 import org.apache.ibatis.io.Resources;
@@ -10,13 +11,15 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+*/
 /**
  * Created by RedRain on 2018/11/16.
  *
  * @author RedRain
  * @version 1.0
  * @description TODO
- */
+ *//*
+
 
 public class Test {
     private static SqlSessionFactory sqlSessionFactory = null;
@@ -203,3 +206,4 @@ public class Test {
 
 
 }
+*/
