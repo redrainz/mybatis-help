@@ -22,7 +22,7 @@ public class UpdateHelper {
         return getUpdateSql(objectEntity);
     }
 
-    private String getUpdateSql(ObjectEntity objectEntity) {
+    private String getUpdateSql(ObjectEntity objectEntity) throws Exception {
         StringBuilder updateStr = new StringBuilder();
         int idIndex = -1;
         updateStr.append("update ")
@@ -43,6 +43,8 @@ public class UpdateHelper {
         if (idIndex > -1) {
             updateStr.append(" where ")
                     .append(ParseUtil.getEqualParams(objectEntity.getPropertyEntities().get(idIndex)));
+        } else {
+            throw new Exception("id为null");
         }
         return updateStr.toString();
     }
