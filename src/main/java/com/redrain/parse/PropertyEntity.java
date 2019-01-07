@@ -12,6 +12,7 @@ public class PropertyEntity {
     private String jdbcType;
     private String javaType;
     private String propertyName;
+    private boolean updateSetNullFlag = false;
     private boolean id;
 
     public PropertyEntity() {
@@ -63,5 +64,13 @@ public class PropertyEntity {
 
     public void setId(boolean id) {
         this.id = id;
+    }
+
+    public boolean isUpdateSetNullFlag() {
+        return updateSetNullFlag;
+    }
+
+    public void setUpdateSetNullFlag(boolean updateSetNullFlag) {
+        this.updateSetNullFlag = updateSetNullFlag;
     }
 }

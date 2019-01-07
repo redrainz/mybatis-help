@@ -30,6 +30,9 @@ public class UpdateHelper {
                 .append(" set \n");
         for (int i = 0; i < objectEntity.getPropertyEntities().size(); i++) {
             PropertyEntity propertyEntity = objectEntity.getPropertyEntities().get(i);
+            if (propertyEntity.isUpdateSetNullFlag()) {
+                continue;
+            }
             if (propertyEntity.isId()) {
                 idIndex = i;
             } else {

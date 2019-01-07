@@ -5,6 +5,7 @@ import com.redrain.anntation.Id;
 import com.redrain.anntation.Ignore;
 import com.redrain.anntation.JavaType;
 import com.redrain.anntation.Table;
+import com.redrain.anntation.UpdateSetNull;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
@@ -41,7 +42,7 @@ public class ObjectParse {
                 Column columnAnnotation = field.getAnnotation(Column.class);
                 Id idAnnotation = field.getAnnotation(Id.class);
                 JavaType javaTypeAnnotation = field.getAnnotation(JavaType.class);
-
+                UpdateSetNull updateSetNullAnnotation = field.getAnnotation(UpdateSetNull.class);
                 if (null != ignoreAnnotation) {
                     continue;
                 }
@@ -66,6 +67,10 @@ public class ObjectParse {
                     jdbcType = ParseUtil.getProperty(columnAnnotation.jdbcType(), jdbcType);
                 }
                 PropertyEntity propertyEntity = new PropertyEntity(columnName, jdbcType, javaType, propertyName, id);
+
+                if (updateSetNullAnnotation != null) {
+                    propertyEntity.setUpdateSetNullFlag(true);
+                }
                 objectEntity.getPropertyEntities().add(propertyEntity);
             }
             if (!hasId) {
