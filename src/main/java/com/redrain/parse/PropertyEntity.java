@@ -12,8 +12,18 @@ public class PropertyEntity {
     private String jdbcType;
     private String javaType;
     private String propertyName;
+    /**
+     * 是否允许该属性更新
+     */
     private boolean updateSetNullFlag = false;
+    /**
+     * 是否主键
+     */
     private boolean id;
+    /**
+     * 参数的顺序，便于使用索引
+     */
+    private int order = 9999;
 
     public PropertyEntity() {
     }
@@ -72,5 +82,13 @@ public class PropertyEntity {
 
     public void setUpdateSetNullFlag(boolean updateSetNullFlag) {
         this.updateSetNullFlag = updateSetNullFlag;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

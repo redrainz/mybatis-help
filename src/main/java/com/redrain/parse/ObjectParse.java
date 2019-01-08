@@ -4,6 +4,7 @@ import com.redrain.anntation.Column;
 import com.redrain.anntation.Id;
 import com.redrain.anntation.Ignore;
 import com.redrain.anntation.JavaType;
+import com.redrain.anntation.Order;
 import com.redrain.anntation.Table;
 import com.redrain.anntation.UpdateSetNull;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
@@ -13,6 +14,7 @@ import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class ObjectParse {
                 Id idAnnotation = field.getAnnotation(Id.class);
                 JavaType javaTypeAnnotation = field.getAnnotation(JavaType.class);
                 UpdateSetNull updateSetNullAnnotation = field.getAnnotation(UpdateSetNull.class);
+                Order orderAnnotation = field.getAnnotation(Order.class);
                 if (null != ignoreAnnotation) {
                     continue;
                 }
@@ -71,6 +74,10 @@ public class ObjectParse {
                 if (updateSetNullAnnotation != null) {
                     propertyEntity.setUpdateSetNullFlag(true);
                 }
+
+                if (orderAnnotation != null) {
+                    propertyEntity.setOrder(orderAnnotation.value());
+                }
                 objectEntity.getPropertyEntities().add(propertyEntity);
             }
             if (!hasId) {
@@ -85,7 +92,7 @@ public class ObjectParse {
                 throw new Exception("主键不能为空");
             }
         }
-
+        objectEntity.getPropertyEntities().sort(Comparator.comparing(PropertyEntity::getOrder));
     }
 
     private static void parseTableName(Class clazz, ObjectEntity objectEntity) throws Exception {
