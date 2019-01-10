@@ -1,4 +1,3 @@
-/*
 package com.redrain.test;
 
 import org.apache.ibatis.io.Resources;
@@ -11,14 +10,13 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-*/
 /**
  * Created by RedRain on 2018/11/16.
  *
  * @author RedRain
  * @version 1.0
  * @description TODO
- *//*
+ */
 
 
 public class Test {
@@ -178,7 +176,7 @@ public class Test {
 
         User user = new User();
         user.setUsername("aassa");
-        //user.setPassword("a");
+        user.setPassword("a");
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -206,4 +204,3 @@ public class Test {
 
 
 }
-*/

@@ -3,6 +3,7 @@ package com.redrain.parse;
 import com.redrain.anntation.Column;
 import com.redrain.anntation.Id;
 import com.redrain.anntation.Ignore;
+import com.redrain.anntation.Indexs;
 import com.redrain.anntation.JavaType;
 import com.redrain.anntation.Order;
 import com.redrain.anntation.Table;
@@ -16,6 +17,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by RedRain on 2018/11/16.
@@ -32,6 +36,23 @@ public class ObjectParse {
         ObjectEntity objectEntity = new ObjectEntity(null, new ArrayList<PropertyEntity>());
         parseTableName(clazz, objectEntity);
         parsePropertyName(clazz, objectEntity);
+
+        /**
+         * 索引注解
+         */
+        Indexs indexs = (Indexs) clazz.getAnnotation(Indexs.class);
+        if (indexs != null && indexs.value().length > 0) {
+            List<String> indexList = new ArrayList<>();
+            for (String index : indexs.value()) {
+                if (index != null && !"".equals(index.trim())) {
+                    index = index.replaceAll(" ", "");
+                    index = index.replaceAll("`", "");
+                    index = ParseUtil.toUpperCase(index);
+                    indexList.add(index);
+                }
+            }
+            objectEntity.setIndexs(indexList);
+        }
         return objectEntity;
     }
 
@@ -117,5 +138,50 @@ public class ObjectParse {
             }
         }
         objectEntity.setPropertyEntities(propertyEntities);
+    }
+
+    public static void useIndexs(ObjectEntity objectEntity) {
+        List<String> indexs = objectEntity.getIndexs();
+        List<PropertyEntity> propertyEntities = objectEntity.getPropertyEntities();
+
+        if (indexs == null || indexs.isEmpty() || propertyEntities == null || propertyEntities.isEmpty()) {
+            return;
+        }
+        Set<String> propertyNames = propertyEntities.stream()
+                .map(PropertyEntity::getPropertyName).collect(Collectors.toSet());
+        int maxIndex = -1;
+        int maxSum = 0;
+        for (int i = 0; i < indexs.size(); i++) {
+            String index = indexs.get(i);
+            if (index != null && !"".equals(index.trim())) {
+                int sum = 0;
+                String[] indexTemp = index.split(",");
+                for (String name : indexTemp) {
+                    if (!propertyNames.contains(name)) {
+                        break;
+                    }
+                    sum++;
+                }
+                if (sum > maxSum) {
+                    maxSum = sum;
+                    maxIndex = i;
+                }
+            }
+        }
+        //使用第maxIndex索引
+        if (maxIndex > -1) {
+            Map<String, PropertyEntity> map = propertyEntities.stream()
+                    .collect(Collectors.toMap(PropertyEntity::getPropertyName, propertyEntity -> propertyEntity));
+            String index = indexs.get(maxIndex);
+            String[] indexTemp = index.split(",");
+            List<PropertyEntity> result = new ArrayList<>();
+            for (int i = 0; i < maxSum; i++) {
+                result.add(map.remove(indexTemp[i]));
+            }
+            result.addAll(new ArrayList<>(map.values()));
+            objectEntity.setPropertyEntities(result);
+        }
+
+
     }
 }
