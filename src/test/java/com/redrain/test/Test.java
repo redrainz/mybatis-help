@@ -1,15 +1,5 @@
 package com.redrain.test;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Assert;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
 /**
  * Created by RedRain on 2018/11/16.
  *
@@ -20,7 +10,7 @@ import java.util.List;
 
 
 public class Test {
-    private static SqlSessionFactory sqlSessionFactory = null;
+  /*  private static SqlSessionFactory sqlSessionFactory = null;
     static {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("config.xml"));
@@ -200,7 +190,7 @@ public class Test {
         System.out.println(user);
         sqlSession.commit();
 
-    }
+    }*/
 
 
 }
