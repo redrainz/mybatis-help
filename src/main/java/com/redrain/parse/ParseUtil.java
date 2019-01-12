@@ -8,6 +8,14 @@ package com.redrain.parse;
  * @description TODO
  */
 public class ParseUtil {
+
+    /**
+     * userName->user_name
+     *
+     * @param target
+     * @return
+     * @throws Exception
+     */
     public static String underlineStitching(String target) throws Exception {
         if (null == target || "".equals(target.trim())) {
             return null;
@@ -19,6 +27,30 @@ public class ParseUtil {
                 target = target.replace(String.valueOf(chars[i]), "_" + String.valueOf(chars[i]).toLowerCase());
                 if (i == 0) {
                     target = target.substring(1);
+                }
+            }
+        }
+        return target;
+    }
+
+    /**
+     * user_name->userName
+     *
+     * @param target
+     * @return
+     * @throws Exception
+     */
+    public static String toUpperCase(String target) throws Exception {
+        if (null == target || "".equals(target.trim())) {
+            return null;
+        }
+
+        char[] chars = target.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == '_' && i < chars.length - 1) {
+                target = target.replace("_" + chars[i + 1], String.valueOf(chars[i + 1]).toUpperCase());
+                if (i == chars.length - 1) {
+                    target = target.substring(0, target.length() - 1);
                 }
             }
         }
