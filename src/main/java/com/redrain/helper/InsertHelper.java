@@ -3,6 +3,7 @@ package com.redrain.helper;
 import com.redrain.parse.ObjectEntity;
 import com.redrain.parse.ObjectParse;
 import com.redrain.parse.ParseUtil;
+import com.redrain.parse.PropertyEntity;
 
 /**
  * Created by RedRain on 2018/11/16.
@@ -15,7 +16,7 @@ public class InsertHelper {
 
     public String insertObj(Object param) throws Exception {
         if (null == param) {
-            throw  new Exception();
+            throw new Exception();
         }
         ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
         return getInsertSql(objectEntity);
@@ -32,6 +33,7 @@ public class InsertHelper {
 
 
     public String getInsertSql(ObjectEntity objectEntity) {
+        objectEntity.getPropertyEntities().removeIf(PropertyEntity::isId);
         StringBuilder insertStr = new StringBuilder();
         insertStr.append("insert into ")
                 .append(objectEntity.getTableName())
