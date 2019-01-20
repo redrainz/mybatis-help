@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ObjectEntity {
     private String tableName;
+    private List<String> indexs;
     private List<PropertyEntity> propertyEntities;
 
     public ObjectEntity() {
@@ -35,5 +36,13 @@ public class ObjectEntity {
 
     public void setPropertyEntities(List<PropertyEntity> propertyEntities) {
         this.propertyEntities = propertyEntities;
+    }
+
+    public List<String> getIndexs() {
+        return indexs;
+    }
+
+    public void setIndexs(List<String> indexs) {
+        this.indexs = indexs;
     }
 }

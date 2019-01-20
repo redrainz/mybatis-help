@@ -47,6 +47,7 @@ public class SelectHelper {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getHeaderStr(objectEntity));
         ObjectParse.delNullProperty(param, objectEntity);
+        ObjectParse.useIndexs(objectEntity);
         for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
             stringBuilder.append(ParseUtil.getEqualParams(propertyEntity))
                     .append(" and ");
@@ -87,6 +88,7 @@ public class SelectHelper {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getHeaderStr(objectEntity));
         ObjectParse.delNullProperty(param, objectEntity);
+        ObjectParse.useIndexs(objectEntity);
         for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
             stringBuilder.append(ParseUtil.getEqualParamsFromObject(propertyEntity))
                     .append(" and ");

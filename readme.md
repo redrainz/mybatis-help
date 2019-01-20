@@ -12,6 +12,24 @@
        </dependency> 
      ```  
 3. 使用mybatis的mapper接口方法
+     1. mapper.xml中namespace为mapper全限定类名
+     2. mapper.xml中必须有BaseResultMap的resultMap
+     ```xml
+     <mapper namespace="com.redrain.test.UserMapper" >
+     <resultMap id="BaseResultMap" type="com.redrain.test.User" >
+     <id column="id" property="id" jdbcType="INTEGER" />
+     <result column="name" property="name" jdbcType="VARCHAR" />
+     <result column="password" property="password" jdbcType="VARCHAR" />
+     </resultMap>
+     ...
+     </mapper>
+     ```
+     ```xml
+     <mapper namespace="com.redrain.test.UserMapper" >
+       <resultMap id="BaseResultMap" type="com.redrain.test.User" />
+     ...
+     </mapper>
+     ```
 4. mapper 接口继承 
     ```java
     public interface UserMapper extends BaseMapper<User> {
@@ -20,7 +38,7 @@
     ```
 5. POJO对象与表映射
 
-    1. 必填 主键必须加上`@Id`注解,且属性名必须为id
+    1. 非必填 主键属性名必须为id,可加上`@Id`注解
     2. 非必填 `@Table`为表名
     3. 非必填 `@Column` 为列名
     4. 非必填 `@Ignore`不映射

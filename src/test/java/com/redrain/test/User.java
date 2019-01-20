@@ -1,8 +1,8 @@
 package com.redrain.test;
 
 import com.redrain.anntation.Column;
-import com.redrain.anntation.Id;
 import com.redrain.anntation.Ignore;
+import com.redrain.anntation.Indexs;
 
 import java.util.Date;
 
@@ -13,8 +13,9 @@ import java.util.Date;
  * @version 1.0
  * @description TODO
  */
+@Indexs({"password", "password,username,`user_id`"})
 public class User {
-    //@Id()
+
     private Integer id;
     @Column(jdbcType = "varchar")
     private String username;
@@ -22,6 +23,8 @@ public class User {
     private Date time;
     @Ignore
     private Date time1;
+
+    private String userId;
 
     public Integer getId() {
         return id;
@@ -61,5 +64,13 @@ public class User {
 
     public void setTime1(Date time1) {
         this.time1 = time1;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
