@@ -13,17 +13,7 @@
      ```  
 3. 使用mybatis的mapper接口方法
      1. mapper.xml中namespace为mapper全限定类名
-     2. mapper.xml中必须有BaseResultMap的resultMap
-     ```xml
-     <mapper namespace="com.redrain.test.UserMapper" >
-     <resultMap id="BaseResultMap" type="com.redrain.test.User" >
-     <id column="id" property="id" jdbcType="INTEGER" />
-     <result column="name" property="name" jdbcType="VARCHAR" />
-     <result column="password" property="password" jdbcType="VARCHAR" />
-     </resultMap>
-     ...
-     </mapper>
-     ```
+    
      ```xml
      <mapper namespace="com.redrain.test.UserMapper" >
        <resultMap id="BaseResultMap" type="com.redrain.test.User" />
@@ -46,12 +36,14 @@
     
     ```java
         @Table("t_user")
+        @Indexs({"password", "password,username,`user_id`"})
         public class User {
             @Id()
             private Integer id;
             private String userName;
             @Column(jdbcType = "varchar")
             private String password;
+            @UpdateSetNull
             private Date time;
             @Ignore
             private Date time1;
