@@ -1,5 +1,15 @@
 package com.redrain.test;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Assert;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by RedRain on 2018/11/16.
  *
@@ -10,7 +20,7 @@ package com.redrain.test;
 
 
 public class Test {
-  /*  private static SqlSessionFactory sqlSessionFactory = null;
+    private static SqlSessionFactory sqlSessionFactory = null;
     static {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("config.xml"));
@@ -166,7 +176,7 @@ public class Test {
 
         User user = new User();
         user.setUsername("aassa");
-        user.setPassword("a");
+        //user.setPassword("a");
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -190,7 +200,7 @@ public class Test {
         System.out.println(user);
         sqlSession.commit();
 
-    }*/
+    }
 
 
 }
