@@ -38,7 +38,7 @@
     </environments>
 
     <mappers >
-        <package name="com.redrain"/>
+        <package name="xyz.redrain"/>
     </mappers>
 
 </configuration>
