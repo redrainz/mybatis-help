@@ -6,7 +6,7 @@
 2. maven引入
      ```xml
        <dependency>
-       <groupId>com.redrain</groupId>
+       <groupId>xyz.redrain</groupId>
        <artifactId>mybatis-help</artifactId>
        <version>0.1.1-SNAPSHOT</version>
        </dependency> 
@@ -15,8 +15,8 @@
      1. mapper.xml中namespace为mapper全限定类名
      2. mapper.xml中必须有BaseResultMap的resultMap
      ```xml
-     <mapper namespace="com.redrain.UserMapper" >
-     <resultMap id="BaseResultMap" type="com.redrain.test.User" >
+     <mapper namespace="xyz.redrain.UserMapper" >
+     <resultMap id="BaseResultMap" type="User" >
      <id column="id" property="id" jdbcType="INTEGER" />
      <result column="name" property="name" jdbcType="VARCHAR" />
      <result column="password" property="password" jdbcType="VARCHAR" />
@@ -25,8 +25,8 @@
      </mapper>
      ```
      ```xml
-     <mapper namespace="com.redrain.UserMapper" >
-       <resultMap id="BaseResultMap" type="com.redrain.test.User" />
+     <mapper namespace="xyz.redrain.UserMapper" >
+       <resultMap id="BaseResultMap" type="User" />
      ...
      </mapper>
      ```
@@ -64,7 +64,7 @@
         ```xml
         <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
             <property name="basePackage" value="xxxxxxxx"/>
-            <property name="markerInterface" value="com.redrain.BaseMapper"/>
+            <property name="markerInterface" value="BaseMapper"/>
         </bean>  
         ```
                   

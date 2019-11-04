@@ -1,10 +1,10 @@
-package com.redrain.parse;
+package xyz.redrain.parse;
 
-import com.redrain.anntation.Column;
-import com.redrain.anntation.Id;
-import com.redrain.anntation.Ignore;
-import com.redrain.anntation.JavaType;
-import com.redrain.anntation.Table;
+import xyz.redrain.anntation.Column;
+import xyz.redrain.anntation.Id;
+import xyz.redrain.anntation.Ignore;
+import xyz.redrain.anntation.JavaType;
+import xyz.redrain.anntation.Table;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;

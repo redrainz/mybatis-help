@@ -1,4 +1,4 @@
-package com.redrain.anntation;
+package xyz.redrain.anntation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -16,7 +16,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Id {
-    String value() default "";
-    String jdbcType() default "";
+public @interface Ignore {
 }

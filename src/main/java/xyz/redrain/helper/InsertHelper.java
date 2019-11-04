@@ -1,8 +1,8 @@
-package com.redrain.helper;
+package xyz.redrain.helper;
 
-import com.redrain.parse.ObjectEntity;
-import com.redrain.parse.ObjectParse;
-import com.redrain.parse.ParseUtil;
+import xyz.redrain.parse.ObjectEntity;
+import xyz.redrain.parse.ObjectParse;
+import xyz.redrain.parse.ParseUtil;
 
 /**
  * Created by RedRain on 2018/11/16.

@@ -1,6 +1,6 @@
-package com.redrain.test;
+package xyz.redrain.test;
 
-import com.redrain.BaseMapper;
+import xyz.redrain.BaseMapper;
 
 /**
  * Created by RedRain on 2018/10/27.
