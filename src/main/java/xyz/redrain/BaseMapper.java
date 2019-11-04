@@ -1,9 +1,9 @@
-package com.redrain;
+package xyz.redrain;
 
-import com.redrain.helper.DeleteHelper;
-import com.redrain.helper.InsertHelper;
-import com.redrain.helper.SelectHelper;
-import com.redrain.helper.UpdateHelper;
+import xyz.redrain.helper.DeleteHelper;
+import xyz.redrain.helper.InsertHelper;
+import xyz.redrain.helper.SelectHelper;
+import xyz.redrain.helper.UpdateHelper;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;

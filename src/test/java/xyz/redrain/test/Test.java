@@ -1,4 +1,4 @@
-package com.redrain.test;
+package xyz.redrain.test;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;

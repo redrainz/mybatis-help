@@ -1,4 +1,4 @@
-package com.redrain.parse;
+package xyz.redrain.parse;
 
 /**
  * Created by RedRain on 2018/11/16.

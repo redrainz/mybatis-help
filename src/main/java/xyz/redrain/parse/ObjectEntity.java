@@ -1,4 +1,4 @@
-package com.redrain.parse;
+package xyz.redrain.parse;
 
 import java.util.List;
 

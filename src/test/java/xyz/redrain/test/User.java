@@ -1,8 +1,8 @@
-package com.redrain.test;
+package xyz.redrain.test;
 
-import com.redrain.anntation.Column;
-import com.redrain.anntation.Ignore;
-import com.redrain.anntation.Indexs;
+import xyz.redrain.anntation.Column;
+import xyz.redrain.anntation.Ignore;
+import xyz.redrain.anntation.Indexs;
 
 import java.util.Date;
 
