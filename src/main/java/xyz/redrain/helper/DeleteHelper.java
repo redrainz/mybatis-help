@@ -10,7 +10,7 @@ import xyz.redrain.parse.PropertyEntity;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 public class DeleteHelper {
     public String deleteObjById(Object param) throws Exception {

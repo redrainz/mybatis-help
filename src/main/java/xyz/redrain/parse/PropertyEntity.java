@@ -5,7 +5,7 @@ package xyz.redrain.parse;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 public class PropertyEntity {
     private String columnName;

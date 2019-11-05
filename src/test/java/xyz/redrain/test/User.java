@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 @Indexs({"password", "password,username,`user_id`"})
 public class User {

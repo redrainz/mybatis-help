@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 public interface BaseMapper<T> {
 

@@ -5,17 +5,9 @@ package xyz.redrain.parse;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
  */
 public class ParseUtil {
 
-    /**
-     * userName->user_name
-     *
-     * @param target
-     * @return
-     * @throws Exception
-     */
     public static String underlineStitching(String target) throws Exception {
         if (null == target || "".equals(target.trim())) {
             return null;
@@ -33,13 +25,7 @@ public class ParseUtil {
         return target;
     }
 
-    /**
-     * user_name->userName
-     *
-     * @param target
-     * @return
-     * @throws Exception
-     */
+
     public static String toUpperCase(String target) throws Exception {
         if (null == target || "".equals(target.trim())) {
             return null;

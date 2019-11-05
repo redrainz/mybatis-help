@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 public class ObjectParse {
     public static ObjectEntity getObjectEntity(Class clazz) throws Exception {

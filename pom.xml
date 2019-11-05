@@ -6,7 +6,10 @@
 
     <groupId>xyz.redrain</groupId>
     <artifactId>mybatis-help</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
+    <name>mybatis-help</name>
+    <description>generate mybatis template</description>
+    <url>https://github.com/redrainz/mybatis-help</url>
 
     <properties>
         <mybatis.version>3.5.0</mybatis.version>
@@ -115,7 +118,7 @@
                         </executions>
                     </plugin>
                     <!-- Javadoc -->
-                   <!-- <plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <executions>
@@ -126,7 +129,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>-->
+                    </plugin>
                     <!-- GPG -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

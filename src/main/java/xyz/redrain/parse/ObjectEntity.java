@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author RedRain
  * @version 1.0
- * @description TODO
+
  */
 public class ObjectEntity {
     private String tableName;
