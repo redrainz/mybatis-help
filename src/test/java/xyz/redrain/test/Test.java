@@ -20,7 +20,7 @@ import java.util.List;
 
 
 public class Test {
-    /*private static SqlSessionFactory sqlSessionFactory = null;
+    private static SqlSessionFactory sqlSessionFactory = null;
     static {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("config.xml"));
@@ -201,6 +201,5 @@ public class Test {
         sqlSession.commit();
 
     }
-*/
 
 }
