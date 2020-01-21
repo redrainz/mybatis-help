@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class ObjectParse {
     public static ObjectEntity getObjectEntity(Class clazz) throws Exception {
@@ -58,6 +57,8 @@ public class ObjectParse {
 
     private static void parsePropertyName(Class clazz, ObjectEntity objectEntity) throws Exception {
         Field[] fields = clazz.getDeclaredFields();
+        Table table = (Table) clazz.getAnnotation(Table.class);
+        boolean propertyUseUnderlineStitching = table == null || table.propertyUseUnderlineStitching();
         if (null != fields && fields.length != 0) {
             boolean hasId = false;
             for (Field field : fields) {
@@ -70,7 +71,9 @@ public class ObjectParse {
                 if (null != ignoreAnnotation) {
                     continue;
                 }
-                String columnName = ParseUtil.underlineStitching(field.getName());
+                String columnName = propertyUseUnderlineStitching
+                        ? ParseUtil.underlineStitching(field.getName())
+                        : field.getName();
                 String javaType = field.getType().getSimpleName().toLowerCase();
                 String jdbcType = null;
                 String propertyName = field.getName();
@@ -118,11 +121,15 @@ public class ObjectParse {
 
     private static void parseTableName(Class clazz, ObjectEntity objectEntity) throws Exception {
         Table table = (Table) clazz.getAnnotation(Table.class);
+        boolean tableUseUnderlineStitching = table == null || table.tableUseUnderlineStitching();
+        String defaultTableName = tableUseUnderlineStitching
+                ? ParseUtil.underlineStitching(clazz.getSimpleName())
+                : clazz.getSimpleName();
         String tableName;
         if (null != table) {
-            tableName = ParseUtil.getProperty(table.value(), ParseUtil.underlineStitching(clazz.getSimpleName()));
+            tableName = ParseUtil.getProperty(table.value(), defaultTableName);
         } else {
-            tableName = ParseUtil.underlineStitching(clazz.getSimpleName());
+            tableName = defaultTableName;
         }
         objectEntity.setTableName(tableName);
     }

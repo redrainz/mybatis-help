@@ -11,12 +11,28 @@ import java.lang.annotation.Target;
  *
  * @author RedRain
  * @version 1.0
-
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Table {
 
-    String value();
+    String value() default "";
+
+    /**
+     * 属性是否映射成下划线模式
+     * true  aB -> a_b
+     * false aB -> aB
+     *
+     * @return
+     */
+    boolean propertyUseUnderlineStitching() default true;
+
+    /**
+     * 属性是否映射成下划线模式
+     * true  aB -> a_b
+     * false aB -> aB
+     * @return
+     */
+    boolean tableUseUnderlineStitching() default true;
 }
