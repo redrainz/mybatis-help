@@ -21,18 +21,16 @@ public @interface Table {
 
     /**
      * 属性是否映射成下划线模式
-     * true  aB -> a_b
-     * false aB -> aB
+     * true  aB - a_b
+     * false aB - aB
      *
-     * @return
      */
     boolean propertyUseUnderlineStitching() default true;
 
     /**
      * 属性是否映射成下划线模式
-     * true  aB -> a_b
-     * false aB -> aB
-     * @return
+     * true  aB - a_b
+     * false aB - aB
      */
     boolean tableUseUnderlineStitching() default true;
 }
