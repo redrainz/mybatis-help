@@ -6,10 +6,10 @@
 2. maven引入
      ```xml
        <dependency>
-       <groupId>xyz.redrain</groupId>
-       <artifactId>mybatis-help</artifactId>
-       <version>1.0.2-RELEASE</version>
-       </dependency> 
+         <groupId>xyz.redrain</groupId>
+         <artifactId>mybatis-help</artifactId>
+         <version>1.0.2</version>
+       </dependency>
      ```  
 3. 使用mybatis的mapper接口方法
      1. mapper.xml中namespace为mapper全限定类名
