@@ -1,6 +1,6 @@
 ## mybatis-help
 
-1. 使用要求
+1. 当使用属性映射为下划线模式时要求
     1. mybatis:3.4.0+
     2. mybatis-spring:1.3.0+
 2. maven引入
@@ -8,7 +8,7 @@
        <dependency>
        <groupId>xyz.redrain</groupId>
        <artifactId>mybatis-help</artifactId>
-       <version>1.0.0-RELEASE</version>
+       <version>1.0.2-RELEASE</version>
        </dependency> 
      ```  
 3. 使用mybatis的mapper接口方法
@@ -61,5 +61,23 @@
             <property name="markerInterface" value="BaseMapper"/>
         </bean>  
         ```
-                  
+7. 1.0.2 增加了 是否选择映射下划线模式,当Table为空时，取默认值
+
+    ```
+    public @interface Table {
+       /**
+         * 属性是否映射成下划线模式
+         * true  aB -> a_b
+         * false aB -> aB
+         *
+         */
+        boolean propertyUseUnderlineStitching() default true;
     
+        /**
+         * 表名是否映射成下划线模式
+         * true  aB -> a_b
+         * false aB -> aB
+         */
+        boolean tableUseUnderlineStitching() default true;
+    }
+   ```    

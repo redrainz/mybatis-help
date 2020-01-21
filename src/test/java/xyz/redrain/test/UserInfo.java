@@ -1,11 +1,16 @@
 package xyz.redrain.test;
 
+import xyz.redrain.anntation.Ignore;
 import xyz.redrain.anntation.Table;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(propertyUseUnderlineStitching = false)
-public class UserInfo {
+public class UserInfo implements Serializable {
+
+    @Ignore
+    private static final long serialVersionUID = 42L;
     private Integer id;
 
     private String userName;

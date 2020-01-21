@@ -28,7 +28,7 @@ public @interface Table {
     boolean propertyUseUnderlineStitching() default true;
 
     /**
-     * 属性是否映射成下划线模式
+     * 表名是否映射成下划线模式
      * true  aB - a_b
      * false aB - aB
      */
