@@ -22,6 +22,11 @@
 
 <configuration>
 
+    <plugins>
+        <plugin interceptor="xyz.redrain.test.MyInterceptor"></plugin>
+        <plugin interceptor="xyz.redrain.test.MyInterceptor2"></plugin>
+    </plugins>
+
 
     <!-- autoMappingBehavior should be set in each test case -->
 

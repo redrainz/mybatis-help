@@ -22,7 +22,6 @@
 
 <configuration>
 
-
     <!-- autoMappingBehavior should be set in each test case -->
 
     <environments default="development">
