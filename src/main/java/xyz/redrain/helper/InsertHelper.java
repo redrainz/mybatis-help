@@ -10,7 +10,6 @@ import xyz.redrain.parse.PropertyEntity;
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class InsertHelper {
 
@@ -34,15 +33,12 @@ public class InsertHelper {
 
     public String getInsertSql(ObjectEntity objectEntity) {
         objectEntity.getPropertyEntities().removeIf(PropertyEntity::isId);
-        StringBuilder insertStr = new StringBuilder();
-        insertStr.append("insert into ")
-                .append(objectEntity.getTableName())
-                .append(" (")
-                .append(ParseUtil.getJdbcParams(objectEntity))
-                .append(") values (")
-                .append(ParseUtil.getSqlParams(objectEntity))
-                .append(")");
-        return insertStr.toString();
+
+        return String.format("insert into %s ( %s ) values ( %s )",
+                ParseUtil.addBackQuote(objectEntity.getTableName()),
+                ParseUtil.getJdbcParams(objectEntity),
+                ParseUtil.getSqlParams(objectEntity));
+
     }
 
 }

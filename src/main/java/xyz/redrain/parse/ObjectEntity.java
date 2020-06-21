@@ -1,5 +1,6 @@
 package xyz.redrain.parse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,14 +8,29 @@ import java.util.List;
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class ObjectEntity {
     private String tableName;
-    private List<String> indexs;
+    private List<String> indices;
     private List<PropertyEntity> propertyEntities;
 
+    /**
+     * 属性是否映射成下划线模式
+     * true  aB - a_b
+     * false aB - aB
+     */
+    boolean propertyUseUnderlineStitching;
+
+    /**
+     * 表名是否映射成下划线模式
+     * true  aB - a_b
+     * false aB - aB
+     */
+    boolean tableUseUnderlineStitching;
+
     public ObjectEntity() {
+        indices = new ArrayList<>();
+        propertyEntities = new ArrayList<>();
     }
 
     public ObjectEntity(String tableName, List<PropertyEntity> propertyEntities) {
@@ -38,11 +54,27 @@ public class ObjectEntity {
         this.propertyEntities = propertyEntities;
     }
 
-    public List<String> getIndexs() {
-        return indexs;
+    public List<String> getIndices() {
+        return indices;
     }
 
-    public void setIndexs(List<String> indexs) {
-        this.indexs = indexs;
+    public void setIndices(List<String> indices) {
+        this.indices = indices;
+    }
+
+    public boolean isPropertyUseUnderlineStitching() {
+        return propertyUseUnderlineStitching;
+    }
+
+    public void setPropertyUseUnderlineStitching(boolean propertyUseUnderlineStitching) {
+        this.propertyUseUnderlineStitching = propertyUseUnderlineStitching;
+    }
+
+    public boolean isTableUseUnderlineStitching() {
+        return tableUseUnderlineStitching;
+    }
+
+    public void setTableUseUnderlineStitching(boolean tableUseUnderlineStitching) {
+        this.tableUseUnderlineStitching = tableUseUnderlineStitching;
     }
 }

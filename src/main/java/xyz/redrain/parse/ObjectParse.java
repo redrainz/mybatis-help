@@ -1,24 +1,12 @@
 package xyz.redrain.parse;
 
-import xyz.redrain.anntation.Column;
-import xyz.redrain.anntation.Id;
-import xyz.redrain.anntation.Ignore;
-import xyz.redrain.anntation.Indexs;
-import xyz.redrain.anntation.JavaType;
-import xyz.redrain.anntation.Order;
-import xyz.redrain.anntation.Table;
-import xyz.redrain.anntation.UpdateSetNull;
-import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
-import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+import org.apache.ibatis.reflection.SystemMetaObject;
+import xyz.redrain.anntation.*;
+import xyz.redrain.exception.ParamClassIsNullException;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,21 +16,27 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 public class ObjectParse {
+
+    private ObjectParse() {
+    }
+
     public static ObjectEntity getObjectEntity(Class clazz) throws Exception {
         if (null == clazz) {
-            return null;
+            throw new ParamClassIsNullException();
         }
-        ObjectEntity objectEntity = new ObjectEntity(null, new ArrayList<PropertyEntity>());
+        ObjectEntity objectEntity = new ObjectEntity();
+        parseIndexs(clazz, objectEntity);
         parseTableName(clazz, objectEntity);
         parsePropertyName(clazz, objectEntity);
 
-        /**
-         * 索引注解
-         */
-        Indexs indexs = (Indexs) clazz.getAnnotation(Indexs.class);
-        if (indexs != null && indexs.value().length > 0) {
+        return objectEntity;
+    }
+
+    private static void parseIndexs(Class clazz, ObjectEntity objectEntity) {
+        Indices indices = (Indices) clazz.getAnnotation(Indices.class);
+        if (indices != null && indices.value().length > 0) {
             List<String> indexList = new ArrayList<>();
-            for (String index : indexs.value()) {
+            for (String index : indices.value()) {
                 if (index != null && !"".equals(index.trim())) {
                     index = index.replaceAll(" ", "");
                     index = index.replaceAll("`", "");
@@ -50,16 +44,14 @@ public class ObjectParse {
                     indexList.add(index);
                 }
             }
-            objectEntity.setIndexs(indexList);
+            objectEntity.setIndices(indexList);
         }
-        return objectEntity;
     }
 
     private static void parsePropertyName(Class clazz, ObjectEntity objectEntity) throws Exception {
         Field[] fields = clazz.getDeclaredFields();
-        Table table = (Table) clazz.getAnnotation(Table.class);
-        boolean propertyUseUnderlineStitching = table == null || table.propertyUseUnderlineStitching();
-        if (null != fields && fields.length != 0) {
+        boolean propertyUseUnderlineStitching = objectEntity.isPropertyUseUnderlineStitching();
+        if (fields.length != 0) {
             boolean hasId = false;
             for (Field field : fields) {
                 Ignore ignoreAnnotation = field.getAnnotation(Ignore.class);
@@ -119,24 +111,26 @@ public class ObjectParse {
         objectEntity.getPropertyEntities().sort(Comparator.comparing(PropertyEntity::getOrder));
     }
 
-    private static void parseTableName(Class clazz, ObjectEntity objectEntity) throws Exception {
+    private static void parseTableName(Class clazz, ObjectEntity objectEntity){
         Table table = (Table) clazz.getAnnotation(Table.class);
         boolean tableUseUnderlineStitching = table == null || table.tableUseUnderlineStitching();
-        String defaultTableName = tableUseUnderlineStitching
-                ? ParseUtil.underlineStitching(clazz.getSimpleName())
-                : clazz.getSimpleName();
+        objectEntity.setTableUseUnderlineStitching(tableUseUnderlineStitching);
+        objectEntity.setPropertyUseUnderlineStitching(table == null || table.propertyUseUnderlineStitching());
+
         String tableName;
-        if (null != table) {
-            tableName = ParseUtil.getProperty(table.value(), defaultTableName);
+        if (table == null || "".equals(table.value().trim())) {
+            tableName = tableUseUnderlineStitching
+                    ? ParseUtil.underlineStitching(clazz.getSimpleName())
+                    : clazz.getSimpleName();
         } else {
-            tableName = defaultTableName;
+            tableName = table.value();
         }
         objectEntity.setTableName(tableName);
     }
 
     public static void delNullProperty(Object object, ObjectEntity objectEntity) {
-        MetaObject metaObject = MetaObject.forObject(object, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
-        List<PropertyEntity> propertyEntities = new ArrayList<PropertyEntity>();
+        MetaObject metaObject = SystemMetaObject.forObject(object);
+        List<PropertyEntity> propertyEntities = new ArrayList<>();
         if (null != objectEntity && null != objectEntity.getPropertyEntities() && !objectEntity.getPropertyEntities().isEmpty()) {
             for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
                 if (null != metaObject.getValue(propertyEntity.getPropertyName())) {
@@ -148,18 +142,18 @@ public class ObjectParse {
     }
 
     public static void useIndexs(ObjectEntity objectEntity) {
-        List<String> indexs = objectEntity.getIndexs();
+        List<String> indices = objectEntity.getIndices();
         List<PropertyEntity> propertyEntities = objectEntity.getPropertyEntities();
 
-        if (indexs == null || indexs.isEmpty() || propertyEntities == null || propertyEntities.isEmpty()) {
+        if (indices == null || indices.isEmpty() || propertyEntities == null || propertyEntities.isEmpty()) {
             return;
         }
         Set<String> propertyNames = propertyEntities.stream()
                 .map(PropertyEntity::getPropertyName).collect(Collectors.toSet());
         int maxIndex = -1;
         int maxSum = 0;
-        for (int i = 0; i < indexs.size(); i++) {
-            String index = indexs.get(i);
+        for (int i = 0; i < indices.size(); i++) {
+            String index = indices.get(i);
             if (index != null && !"".equals(index.trim())) {
                 int sum = 0;
                 String[] indexTemp = index.split(",");
@@ -179,7 +173,7 @@ public class ObjectParse {
         if (maxIndex > -1) {
             Map<String, PropertyEntity> map = propertyEntities.stream()
                     .collect(Collectors.toMap(PropertyEntity::getPropertyName, propertyEntity -> propertyEntity));
-            String index = indexs.get(maxIndex);
+            String index = indices.get(maxIndex);
             String[] indexTemp = index.split(",");
             List<PropertyEntity> result = new ArrayList<>();
             for (int i = 0; i < maxSum; i++) {

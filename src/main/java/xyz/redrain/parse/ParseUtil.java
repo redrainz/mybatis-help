@@ -1,5 +1,8 @@
 package xyz.redrain.parse;
 
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 /**
  * Created by RedRain on 2018/11/16.
  *
@@ -8,7 +11,7 @@ package xyz.redrain.parse;
  */
 public class ParseUtil {
 
-    public static String underlineStitching(String target) throws Exception {
+    public static String underlineStitching(String target) {
         if (null == target || "".equals(target.trim())) {
             return null;
         }
@@ -26,7 +29,7 @@ public class ParseUtil {
     }
 
 
-    public static String toUpperCase(String target) throws Exception {
+    public static String toUpperCase(String target) {
         if (null == target || "".equals(target.trim())) {
             return null;
         }
@@ -50,6 +53,14 @@ public class ParseUtil {
         return value;
     }
 
+    public static String getProperty(String value, Supplier<String> supplier) {
+        if (null == value || "".equals(value.trim())) {
+            return supplier.get();
+        }
+        return value;
+    }
+
+
     public static String getSqlParams(ObjectEntity objectEntity) {
         StringBuilder paramsStr = new StringBuilder();
         for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
@@ -67,15 +78,9 @@ public class ParseUtil {
     }
 
     public static String getJdbcParams(ObjectEntity objectEntity) {
-        StringBuilder paramsStr = new StringBuilder();
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            paramsStr.append(propertyEntity.getColumnName())
-                    .append(", ");
-        }
-        if (paramsStr.length() > 1) {
-            paramsStr.deleteCharAt(paramsStr.length() - 2);
-        }
-        return paramsStr.toString();
+        return objectEntity.getPropertyEntities().stream()
+                .map(propertyEntity -> ParseUtil.addBackQuote(propertyEntity.getColumnName()))
+                .collect(Collectors.joining(" , "));
     }
 
     public static String getJdbcParamsAndAlias(ObjectEntity objectEntity) {
@@ -110,7 +115,7 @@ public class ParseUtil {
 
     public static String getEqualParams(PropertyEntity propertyEntity) {
         StringBuilder param = new StringBuilder();
-        param.append(propertyEntity.getColumnName())
+        param.append(ParseUtil.addBackQuote(propertyEntity.getColumnName()))
                 .append(" = ")
                 .append("#{")
                 .append(propertyEntity.getPropertyName())
@@ -120,4 +125,31 @@ public class ParseUtil {
                 .append("}");
         return param.toString();
     }
+
+
+    /**
+     * 加上反引号
+     *
+     * @param s String
+     * @return String
+     */
+    public static String addBackQuote(String s) {
+        if (s == null || "".equals(s.trim())) {
+            return s;
+        }
+        return String.format("`%s`", s);
+    }
+
+    /**
+     * 去掉反引号
+     *
+     * @param s String
+     * @return String
+     */
+    public static String removeBackQuote(String s) {
+
+        return s == null ? null : s.replaceAll("`", "");
+    }
+
+
 }

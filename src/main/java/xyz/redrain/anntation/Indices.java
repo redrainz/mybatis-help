@@ -11,13 +11,12 @@ import java.lang.annotation.Target;
  *
  * @author RedRain
  * @version 1.0
-
  */
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Indexs {
+public @interface Indices {
 
     String[] value();
 }

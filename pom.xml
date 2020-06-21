@@ -6,7 +6,7 @@
 
     <groupId>xyz.redrain</groupId>
     <artifactId>mybatis-help</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>mybatis-help</name>
     <description>generate mybatis template</description>
     <url>https://github.com/redrainz/mybatis-help</url>
