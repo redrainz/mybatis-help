@@ -148,7 +148,7 @@ public class ObjectParse {
         objectEntity.setPropertyEntities(propertyEntities);
     }
 
-    public static void useIndexs(ObjectEntity objectEntity) {
+    public static void useIndices(ObjectEntity objectEntity) {
         List<String> indices = objectEntity.getIndices();
         List<PropertyEntity> propertyEntities = objectEntity.getPropertyEntities();
 

@@ -61,7 +61,7 @@ public class SelectHelper {
                     .map(ParseUtil::getEqualParams)
                     .orElseThrow(PrimaryKeyNoExsitException::new);
         } else {
-            ObjectParse.useIndexs(objectEntity);
+            ObjectParse.useIndices(objectEntity);
             whereSql = objectEntity.getPropertyEntities().stream()
                     .map(ParseUtil::getEqualParams)
                     .collect(Collectors.joining(" AND "));
