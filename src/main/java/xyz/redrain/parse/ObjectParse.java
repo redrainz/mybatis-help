@@ -1,10 +1,7 @@
 package xyz.redrain.parse;
 
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
 import xyz.redrain.anntation.*;
 import xyz.redrain.exception.DuplicatePrimaryKeyException;
-import xyz.redrain.exception.ParamClassIsNullException;
 import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.exception.PrimaryKeyNoExsitException;
 
