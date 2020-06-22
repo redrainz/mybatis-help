@@ -29,7 +29,7 @@ public class MyInterceptor implements Interceptor {
 
         MetaObject metaObject = SystemMetaObject.forObject(invocation.getTarget());
         Object value = metaObject.getValue("delegate.boundSql.sql");
-        System.out.println("intercept");
+        System.out.println(value);
         return invocation.proceed();
     }
 

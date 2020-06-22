@@ -87,11 +87,16 @@ public class ParseUtil {
     }
 
 
-    public static String getEqualParamsFromObject(PropertyEntity propertyEntity) {
+    public static String getEqualParams(PropertyEntity propertyEntity, String paramName) {
 
-        return String.format(" %s = #{param.%s,%s} ",
+        if (paramName != null && !"".equals(paramName.trim())) {
+            paramName += ".";
+        } else {
+            paramName = "";
+        }
+        return String.format(" %s = #{%s,%s} ",
                 addBackQuote(propertyEntity.getColumnName()),
-                propertyEntity.getPropertyName(),
+                paramName + propertyEntity.getPropertyName(),
                 propertyEntity.getJdbcType() != null
                         ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
                         : "javaType = " + propertyEntity.getJavaType());

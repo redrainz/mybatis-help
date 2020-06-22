@@ -61,14 +61,16 @@ public class SelectHelper {
                     .map(ParseUtil::getEqualParams)
                     .orElseThrow(PrimaryKeyNoExsitException::new);
         } else {
-            ObjectParse.useIndices(objectEntity);
-            whereSql = objectEntity.getPropertyEntities().stream()
-                    .map(ParseUtil::getEqualParams)
-                    .collect(Collectors.joining(" AND "));
 
+            String paramName = limit != null && limit > 0 ? "param" : null;
             if (offset != null && limit != null && limit > 0) {
                 limitStr = String.format(" LIMIT %d,%d ", offset, limit);
             }
+            ObjectParse.useIndices(objectEntity);
+            whereSql = objectEntity.getPropertyEntities().stream()
+                    .map(propertyEntity -> ParseUtil.getEqualParams(propertyEntity, paramName))
+                    .collect(Collectors.joining(" AND "));
+
 
         }
 
@@ -82,7 +84,7 @@ public class SelectHelper {
             throw new SelectConditionNoExsitException();
         }
         String sql = String.format("SELECT %s FROM %s", headStr, tableName);
-        if (whereSql == null || "".equals(whereSql.trim())) {
+        if (whereSql != null && !"".equals(whereSql.trim())) {
             sql += " WHERE " + whereSql;
         }
         if (limitStr != null) {
