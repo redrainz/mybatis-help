@@ -62,68 +62,49 @@ public class ParseUtil {
 
 
     public static String getSqlParams(ObjectEntity objectEntity) {
-        StringBuilder paramsStr = new StringBuilder();
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            paramsStr.append("#{")
-                    .append(propertyEntity.getPropertyName())
-                    .append(null != propertyEntity.getJdbcType()
-                            ? ", jdbcType=" + propertyEntity.getJdbcType().toUpperCase()
-                            : ", javaType=" + propertyEntity.getJavaType().toUpperCase())
-                    .append("}, ");
-        }
-        if (paramsStr.length() > 1) {
-            paramsStr.deleteCharAt(paramsStr.length() - 2);
-        }
-        return paramsStr.toString();
+
+        return objectEntity.getPropertyEntities().stream()
+                .map(propertyEntity ->
+                        String.format("#{ %s , %s }", propertyEntity.getPropertyName(),
+                                propertyEntity.getJdbcType() != null
+                                        ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
+                                        : "javaType = " + propertyEntity.getJavaType()))
+                .collect(Collectors.joining(" , "));
     }
 
     public static String getJdbcParams(ObjectEntity objectEntity) {
         return objectEntity.getPropertyEntities().stream()
-                .map(propertyEntity -> ParseUtil.addBackQuote(propertyEntity.getColumnName()))
+                .map(propertyEntity -> addBackQuote(propertyEntity.getColumnName()))
                 .collect(Collectors.joining(" , "));
     }
 
     public static String getJdbcParamsAndAlias(ObjectEntity objectEntity) {
-        StringBuilder paramsStr = new StringBuilder();
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            paramsStr.append(propertyEntity.getColumnName())
-                    .append(" as ")
-                    .append(" '")
-                    .append(propertyEntity.getPropertyName())
-                    .append("' ")
-                    .append(", ");
-        }
-        if (paramsStr.length() > 1) {
-            paramsStr.deleteCharAt(paramsStr.length() - 2);
-        }
-        return paramsStr.toString();
+
+        return objectEntity.getPropertyEntities().stream()
+                .map(propertyEntity -> String.format("%s AS '%s'", addBackQuote(propertyEntity.getColumnName()),
+                        propertyEntity.getPropertyName()))
+                .collect(Collectors.joining(" , "));
     }
 
 
     public static String getEqualParamsFromObject(PropertyEntity propertyEntity) {
-        StringBuilder param = new StringBuilder();
-        param.append(propertyEntity.getColumnName())
-                .append(" = ")
-                .append("#{")
-                .append("param." + propertyEntity.getPropertyName())
-                .append(null != propertyEntity.getJdbcType()
-                        ? ", jdbcType=" + propertyEntity.getJdbcType().toUpperCase()
-                        : ", javaType=" + propertyEntity.getJavaType().toUpperCase())
-                .append("}");
-        return param.toString();
+
+        return String.format(" %s = #{param.%s,%s} ",
+                addBackQuote(propertyEntity.getColumnName()),
+                propertyEntity.getPropertyName(),
+                propertyEntity.getJdbcType() != null
+                        ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
+                        : "javaType = " + propertyEntity.getJavaType());
     }
 
     public static String getEqualParams(PropertyEntity propertyEntity) {
-        StringBuilder param = new StringBuilder();
-        param.append(ParseUtil.addBackQuote(propertyEntity.getColumnName()))
-                .append(" = ")
-                .append("#{")
-                .append(propertyEntity.getPropertyName())
-                .append(null != propertyEntity.getJdbcType()
-                        ? ", jdbcType=" + propertyEntity.getJdbcType().toUpperCase()
-                        : ", javaType=" + propertyEntity.getJavaType().toUpperCase())
-                .append("}");
-        return param.toString();
+
+        return String.format(" %s = #{%s,%s} ",
+                addBackQuote(propertyEntity.getColumnName()),
+                propertyEntity.getPropertyName(),
+                propertyEntity.getJdbcType() != null
+                        ? "jdbcType=" + propertyEntity.getJdbcType().toUpperCase()
+                        : "javaType=" + propertyEntity.getJavaType());
     }
 
 

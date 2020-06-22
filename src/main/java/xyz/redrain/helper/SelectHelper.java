@@ -1,61 +1,32 @@
 package xyz.redrain.helper;
 
+import com.sun.org.apache.regexp.internal.RE;
+import xyz.redrain.exception.PageParamIsNullException;
+import xyz.redrain.exception.ParamIsNullException;
+import xyz.redrain.exception.PrimaryKeyNoExsitException;
+import xyz.redrain.exception.SelectConditionNoExsitException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
 import xyz.redrain.parse.PropertyEntity;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by RedRain on 2018/11/21.
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class SelectHelper {
 
     public String selectObjById(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        return selectObjById1(objectEntity);
-    }
-
-    private String selectObjById1(ObjectEntity objectEntity) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getHeaderStr(objectEntity));
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            if (propertyEntity.isId()) {
-                stringBuilder.append(ParseUtil.getEqualParams(propertyEntity));
-            }
-        }
-        return stringBuilder.toString();
+        return getSelectSql(param, true, null, null);
     }
 
     public String selectObjByParams(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        return selectObjByParams1(param, objectEntity);
-    }
-
-    private String selectObjByParams1(Object param, ObjectEntity objectEntity) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getHeaderStr(objectEntity));
-        ObjectParse.delNullProperty(param, objectEntity);
-        ObjectParse.useIndexs(objectEntity);
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            stringBuilder.append(ParseUtil.getEqualParams(propertyEntity))
-                    .append(" and ");
-        }
-        if (stringBuilder.length() > 0) {
-            stringBuilder.delete(stringBuilder.length() - 4, stringBuilder.length());
-        }
-        return stringBuilder.toString();
+        return getSelectSql(param, false, null, null);
     }
 
     public String selectListByParams(Object param) throws Exception {
@@ -63,50 +34,61 @@ public class SelectHelper {
         return selectObjByParams(param);
     }
 
-
     public String selectListByParamsPages(Map<String, Object> params) throws Exception {
         Object param = params.get("param");
         Integer offset = (Integer) params.get("offset");
         Integer limit = (Integer) params.get("limit");
-        if (null == param || null == offset || null == limit) {
-            throw new Exception();
+        if (null == offset || null == limit || limit < 1) {
+            throw new PageParamIsNullException();
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(selectListByParamsPages1(param))
-                .append(" limit ")
-                .append(offset)
-                .append(" , ")
-                .append(limit);
-        return stringBuilder.toString();
+        return getSelectSql(param, false, offset, limit);
     }
 
-    private String selectListByParamsPages1(Object param) throws Exception {
+    private String getSelectSql(Object param, boolean isId, Integer offset, Integer limit) throws Exception {
         if (null == param) {
-            throw new Exception();
+            throw new ParamIsNullException();
         }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getHeaderStr(objectEntity));
-        ObjectParse.delNullProperty(param, objectEntity);
-        ObjectParse.useIndexs(objectEntity);
-        for (PropertyEntity propertyEntity : objectEntity.getPropertyEntities()) {
-            stringBuilder.append(ParseUtil.getEqualParamsFromObject(propertyEntity))
-                    .append(" and ");
+        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
+        String headerStr = ParseUtil.getJdbcParamsAndAlias(objectEntity);
+        String tableName = ParseUtil.addBackQuote(objectEntity.getTableName());
+        String whereSql;
+        String limitStr = null;
+
+        ObjectParse.delNullProperty(objectEntity);
+        if (isId) {
+            whereSql = objectEntity.getPropertyEntities().stream()
+                    .filter(PropertyEntity::isId).findAny()
+                    .map(ParseUtil::getEqualParams)
+                    .orElseThrow(PrimaryKeyNoExsitException::new);
+        } else {
+            ObjectParse.useIndexs(objectEntity);
+            whereSql = objectEntity.getPropertyEntities().stream()
+                    .map(ParseUtil::getEqualParams)
+                    .collect(Collectors.joining(" AND "));
+
+            if (offset != null && limit != null && limit > 0) {
+                limitStr = String.format(" LIMIT %d,%d ", offset, limit);
+            }
+
         }
-        if (stringBuilder.length() > 0) {
-            stringBuilder.delete(stringBuilder.length() - 4, stringBuilder.length());
-        }
-        return stringBuilder.toString();
+
+        return getSelectSql0(headerStr, tableName, whereSql, limitStr);
     }
 
-    private String getHeaderStr(ObjectEntity objectEntity) {
-        StringBuilder selectStr = new StringBuilder();
-        selectStr.append("select ")
-                .append(ParseUtil.getJdbcParamsAndAlias(objectEntity))
-                .append(" from ")
-                .append(objectEntity.getTableName())
-                .append(" where ");
-        return selectStr.toString();
+
+    private String getSelectSql0(String headStr, String tableName, String whereSql, String limitStr) throws SelectConditionNoExsitException {
+
+        if (limitStr == null && (whereSql == null || "".equals(whereSql.trim()))) {
+            throw new SelectConditionNoExsitException();
+        }
+        String sql = String.format("SELECT %s FROM %s", headStr, tableName);
+        if (whereSql == null || "".equals(whereSql.trim())) {
+            sql += " WHERE " + whereSql;
+        }
+        if (limitStr != null) {
+            sql += limitStr;
+        }
+        return sql;
     }
 
 

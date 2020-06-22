@@ -5,17 +5,17 @@ package xyz.redrain.parse;
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class PropertyEntity {
     private String columnName;
     private String jdbcType;
     private String javaType;
     private String propertyName;
+    private Object propertyValue;
     /**
      * 是否允许该属性更新
      */
-    private boolean updateSetNullFlag = false;
+    private boolean updateSetNullFlag;
     /**
      * 是否主键
      */
@@ -26,14 +26,6 @@ public class PropertyEntity {
     private int order = 9999;
 
     public PropertyEntity() {
-    }
-
-    public PropertyEntity(String columnName, String jdbcType, String javaType, String propertyName, boolean id) {
-        this.columnName = columnName;
-        this.jdbcType = jdbcType;
-        this.javaType = javaType;
-        this.propertyName = propertyName;
-        this.id = id;
     }
 
     public String getColumnName() {
@@ -90,5 +82,13 @@ public class PropertyEntity {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public Object getPropertyValue() {
+        return propertyValue;
+    }
+
+    public void setPropertyValue(Object propertyValue) {
+        this.propertyValue = propertyValue;
     }
 }

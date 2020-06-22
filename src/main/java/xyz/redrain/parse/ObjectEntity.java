@@ -33,11 +33,6 @@ public class ObjectEntity {
         propertyEntities = new ArrayList<>();
     }
 
-    public ObjectEntity(String tableName, List<PropertyEntity> propertyEntities) {
-        this.tableName = tableName;
-        this.propertyEntities = propertyEntities;
-    }
-
     public String getTableName() {
         return tableName;
     }

@@ -1,7 +1,8 @@
 package xyz.redrain.helper;
 
-import xyz.redrain.exception.IdNoExsitException;
+import xyz.redrain.exception.DeleteConditionNoExsitException;
 import xyz.redrain.exception.ParamIsNullException;
+import xyz.redrain.exception.PrimaryKeyNoExsitException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
@@ -40,18 +41,22 @@ public class DeleteHelper {
             throw new ParamIsNullException();
         }
 
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        ObjectParse.delNullProperty(param, objectEntity);
-
+        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
         String equalParams = isId ?
                 objectEntity.getPropertyEntities().stream()
-                        .filter(PropertyEntity::isId).findAny()
+                        .filter(PropertyEntity::isId)
+                        .filter(propertyEntity -> propertyEntity.getPropertyValue() != null)
+                        .findAny()
                         .map(ParseUtil::getEqualParams)
-                        .orElseThrow(IdNoExsitException::new)
+                        .orElseThrow(PrimaryKeyNoExsitException::new)
                 : objectEntity.getPropertyEntities().stream()
+                .filter(propertyEntity -> propertyEntity.getPropertyValue() != null)
                 .map(ParseUtil::getEqualParams)
                 .collect(Collectors.joining(" and "));
 
+        if ("".equals(equalParams.trim())) {
+            throw new DeleteConditionNoExsitException();
+        }
         return String.format("DELETE FROM %s WHERE %s",
                 ParseUtil.addBackQuote(objectEntity.getTableName()),
                 equalParams);

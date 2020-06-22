@@ -1,5 +1,7 @@
 package xyz.redrain.helper;
 
+import xyz.redrain.exception.InsertValuesNoExsitException;
+import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
@@ -14,26 +16,27 @@ import xyz.redrain.parse.PropertyEntity;
 public class InsertHelper {
 
     public String insertObj(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        return getInsertSql(objectEntity);
+        return getInsertSql(param, false);
     }
 
     public String insertObjSelective(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        ObjectParse.delNullProperty(param, objectEntity);
-        return getInsertSql(objectEntity);
+        return getInsertSql(param, true);
     }
 
 
-    public String getInsertSql(ObjectEntity objectEntity) {
-        objectEntity.getPropertyEntities().removeIf(PropertyEntity::isId);
+    public String getInsertSql(Object param, boolean isSelective) throws Exception {
+        if (null == param) {
+            throw new ParamIsNullException();
+        }
 
+        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
+        if (isSelective) {
+            ObjectParse.delNullProperty(objectEntity);
+        }
+
+        if (objectEntity.getPropertyEntities().isEmpty()){
+            throw new InsertValuesNoExsitException();
+        }
         return String.format("insert into %s ( %s ) values ( %s )",
                 ParseUtil.addBackQuote(objectEntity.getTableName()),
                 ParseUtil.getJdbcParams(objectEntity),

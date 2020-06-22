@@ -1,64 +1,60 @@
 package xyz.redrain.helper;
 
+import xyz.redrain.exception.ParamIsNullException;
+import xyz.redrain.exception.PrimaryKeyNoExsitException;
+import xyz.redrain.exception.UpdateSetValueNoExsitException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
 import xyz.redrain.parse.PropertyEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by RedRain on 2018/11/19.
  *
  * @author RedRain
  * @version 1.0
-
  */
 public class UpdateHelper {
 
     public String updateObjById(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        return getUpdateSql(objectEntity);
-    }
-
-    private String getUpdateSql(ObjectEntity objectEntity) throws Exception {
-        StringBuilder updateStr = new StringBuilder();
-        int idIndex = -1;
-        updateStr.append("update ")
-                .append(objectEntity.getTableName())
-                .append(" set \n");
-        for (int i = 0; i < objectEntity.getPropertyEntities().size(); i++) {
-            PropertyEntity propertyEntity = objectEntity.getPropertyEntities().get(i);
-            if (propertyEntity.isUpdateSetNullFlag()) {
-                continue;
-            }
-            if (propertyEntity.isId()) {
-                idIndex = i;
-            } else {
-                updateStr.append(ParseUtil.getEqualParams(propertyEntity))
-                        .append(", ");
-            }
-        }
-        if (updateStr.length() > 1) {
-            updateStr.deleteCharAt(updateStr.length() - 2);
-        }
-        if (idIndex > -1) {
-            updateStr.append(" where ")
-                    .append(ParseUtil.getEqualParams(objectEntity.getPropertyEntities().get(idIndex)));
-        } else {
-            throw new Exception("id为null");
-        }
-        return updateStr.toString();
+        return getUpdateSql(param, false);
     }
 
     public String updateObjSelectiveById(Object param) throws Exception {
-        if (null == param) {
-            throw new Exception();
-        }
-        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param.getClass());
-        ObjectParse.delNullProperty(param, objectEntity);
-        return getUpdateSql(objectEntity);
+        return getUpdateSql(param, true);
     }
+
+
+    private String getUpdateSql(Object param, boolean isSelective) throws Exception {
+        if (null == param) {
+            throw new ParamIsNullException();
+        }
+        ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
+
+        if (isSelective) {
+            ObjectParse.delNullProperty(objectEntity);
+        }
+
+        String whereStr = objectEntity.getPropertyEntities().stream()
+                .filter(PropertyEntity::isId).findAny()
+                .map(ParseUtil::getEqualParams)
+                .orElseThrow(PrimaryKeyNoExsitException::new);
+
+        String equalStr = objectEntity.getPropertyEntities().stream()
+                .filter(propertyEntity -> !propertyEntity.isId())
+                .filter(propertyEntity -> !propertyEntity.isUpdateSetNullFlag())
+                .map(ParseUtil::getEqualParams)
+                .collect(Collectors.joining(" , "));
+
+        if ("".equals(equalStr.trim())) {
+            throw new UpdateSetValueNoExsitException();
+        }
+        return String.format("UPDATE %s SET %s WHERE %s", ParseUtil.addBackQuote(objectEntity.getTableName()),
+                equalStr, whereStr);
+    }
+
 
 }
