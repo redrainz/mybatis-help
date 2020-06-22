@@ -7,13 +7,13 @@ package xyz.redrain.exception;
  * @version 1.0
  */
 
-public class SelectConditionNoExsitException extends Exception {
+public class SelectConditionNoExistException extends Exception {
 
-    public SelectConditionNoExsitException() {
+    public SelectConditionNoExistException() {
         super("select condition is null");
     }
 
-    public SelectConditionNoExsitException(String message) {
+    public SelectConditionNoExistException(String message) {
         super(message);
     }
 }

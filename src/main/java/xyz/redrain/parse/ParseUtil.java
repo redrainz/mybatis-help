@@ -66,9 +66,7 @@ public class ParseUtil {
         return objectEntity.getPropertyEntities().stream()
                 .map(propertyEntity ->
                         String.format("#{ %s , %s }", propertyEntity.getPropertyName(),
-                                propertyEntity.getJdbcType() != null
-                                        ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
-                                        : "javaType = " + propertyEntity.getJavaType()))
+                                getPropertyTypeStr(propertyEntity)))
                 .collect(Collectors.joining(" , "));
     }
 
@@ -97,9 +95,7 @@ public class ParseUtil {
         return String.format(" %s = #{%s,%s} ",
                 addBackQuote(propertyEntity.getColumnName()),
                 paramName + propertyEntity.getPropertyName(),
-                propertyEntity.getJdbcType() != null
-                        ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
-                        : "javaType = " + propertyEntity.getJavaType());
+                getPropertyTypeStr(propertyEntity));
     }
 
     public static String getEqualParams(PropertyEntity propertyEntity) {
@@ -107,11 +103,15 @@ public class ParseUtil {
         return String.format(" %s = #{%s,%s} ",
                 addBackQuote(propertyEntity.getColumnName()),
                 propertyEntity.getPropertyName(),
-                propertyEntity.getJdbcType() != null
-                        ? "jdbcType=" + propertyEntity.getJdbcType().toUpperCase()
-                        : "javaType=" + propertyEntity.getJavaType());
+                getPropertyTypeStr(propertyEntity));
     }
 
+
+    private static String getPropertyTypeStr(PropertyEntity propertyEntity) {
+        return propertyEntity.getJdbcType() != null
+                ? "jdbcType = " + propertyEntity.getJdbcType().toUpperCase()
+                : "javaType = " + propertyEntity.getJavaType();
+    }
 
     /**
      * 加上反引号

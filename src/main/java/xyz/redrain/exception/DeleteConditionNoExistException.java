@@ -7,13 +7,13 @@ package xyz.redrain.exception;
  * @version 1.0
  */
 
-public class DeleteConditionNoExsitException extends Exception {
+public class DeleteConditionNoExistException extends Exception {
 
-    public DeleteConditionNoExsitException() {
+    public DeleteConditionNoExistException() {
         super("delete condition is null");
     }
 
-    public DeleteConditionNoExsitException(String message) {
+    public DeleteConditionNoExistException(String message) {
         super(message);
     }
 }

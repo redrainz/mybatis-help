@@ -7,13 +7,13 @@ package xyz.redrain.exception;
  * @version 1.0
  */
 
-public class UpdateSetValueNoExsitException extends Exception {
+public class UpdateSetValueNoExistException extends Exception {
 
-    public UpdateSetValueNoExsitException() {
+    public UpdateSetValueNoExistException() {
         super("update set value is null");
     }
 
-    public UpdateSetValueNoExsitException(String message) {
+    public UpdateSetValueNoExistException(String message) {
         super(message);
     }
 }

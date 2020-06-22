@@ -3,7 +3,7 @@ package xyz.redrain.parse;
 import xyz.redrain.anntation.*;
 import xyz.redrain.exception.DuplicatePrimaryKeyException;
 import xyz.redrain.exception.ParamIsNullException;
-import xyz.redrain.exception.PrimaryKeyNoExsitException;
+import xyz.redrain.exception.PrimaryKeyNoExistException;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -115,7 +115,7 @@ public class ObjectParse {
             }
 
             if (!hasId) {
-                throw new PrimaryKeyNoExsitException();
+                throw new PrimaryKeyNoExistException();
             }
         }
         objectEntity.getPropertyEntities().sort(Comparator.comparing(PropertyEntity::getOrder));

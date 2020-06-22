@@ -1,6 +1,6 @@
 package xyz.redrain.helper;
 
-import xyz.redrain.exception.InsertValuesNoExsitException;
+import xyz.redrain.exception.InsertValuesNoExistException;
 import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
@@ -35,9 +35,9 @@ public class InsertHelper {
         }
 
         if (objectEntity.getPropertyEntities().isEmpty()){
-            throw new InsertValuesNoExsitException();
+            throw new InsertValuesNoExistException();
         }
-        return String.format("insert into %s ( %s ) values ( %s )",
+        return String.format("INSERT INTO %s ( %s ) VALUES ( %s )",
                 ParseUtil.addBackQuote(objectEntity.getTableName()),
                 ParseUtil.getJdbcParams(objectEntity),
                 ParseUtil.getSqlParams(objectEntity));

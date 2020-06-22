@@ -7,13 +7,13 @@ package xyz.redrain.exception;
  * @version 1.0
  */
 
-public class InsertValuesNoExsitException extends Exception {
+public class InsertValuesNoExistException extends Exception {
 
-    public InsertValuesNoExsitException() {
+    public InsertValuesNoExistException() {
         super("insert values value is null");
     }
 
-    public InsertValuesNoExsitException(String message) {
+    public InsertValuesNoExistException(String message) {
         super(message);
     }
 }

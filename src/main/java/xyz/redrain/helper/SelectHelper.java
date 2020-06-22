@@ -3,8 +3,8 @@ package xyz.redrain.helper;
 import com.sun.org.apache.regexp.internal.RE;
 import xyz.redrain.exception.PageParamIsNullException;
 import xyz.redrain.exception.ParamIsNullException;
-import xyz.redrain.exception.PrimaryKeyNoExsitException;
-import xyz.redrain.exception.SelectConditionNoExsitException;
+import xyz.redrain.exception.PrimaryKeyNoExistException;
+import xyz.redrain.exception.SelectConditionNoExistException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
@@ -59,7 +59,7 @@ public class SelectHelper {
             whereSql = objectEntity.getPropertyEntities().stream()
                     .filter(PropertyEntity::isId).findAny()
                     .map(ParseUtil::getEqualParams)
-                    .orElseThrow(PrimaryKeyNoExsitException::new);
+                    .orElseThrow(PrimaryKeyNoExistException::new);
         } else {
 
             String paramName = limit != null && limit > 0 ? "param" : null;
@@ -78,10 +78,10 @@ public class SelectHelper {
     }
 
 
-    private String getSelectSql0(String headStr, String tableName, String whereSql, String limitStr) throws SelectConditionNoExsitException {
+    private String getSelectSql0(String headStr, String tableName, String whereSql, String limitStr) throws SelectConditionNoExistException {
 
         if (limitStr == null && (whereSql == null || "".equals(whereSql.trim()))) {
-            throw new SelectConditionNoExsitException();
+            throw new SelectConditionNoExistException();
         }
         String sql = String.format("SELECT %s FROM %s", headStr, tableName);
         if (whereSql != null && !"".equals(whereSql.trim())) {

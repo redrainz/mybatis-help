@@ -1,8 +1,8 @@
 package xyz.redrain.helper;
 
 import xyz.redrain.exception.ParamIsNullException;
-import xyz.redrain.exception.PrimaryKeyNoExsitException;
-import xyz.redrain.exception.UpdateSetValueNoExsitException;
+import xyz.redrain.exception.PrimaryKeyNoExistException;
+import xyz.redrain.exception.UpdateSetValueNoExistException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
@@ -41,7 +41,7 @@ public class UpdateHelper {
         String whereStr = objectEntity.getPropertyEntities().stream()
                 .filter(PropertyEntity::isId).findAny()
                 .map(ParseUtil::getEqualParams)
-                .orElseThrow(PrimaryKeyNoExsitException::new);
+                .orElseThrow(PrimaryKeyNoExistException::new);
 
         String equalStr = objectEntity.getPropertyEntities().stream()
                 .filter(propertyEntity -> !propertyEntity.isId())
@@ -50,7 +50,7 @@ public class UpdateHelper {
                 .collect(Collectors.joining(" , "));
 
         if ("".equals(equalStr.trim())) {
-            throw new UpdateSetValueNoExsitException();
+            throw new UpdateSetValueNoExistException();
         }
         return String.format("UPDATE %s SET %s WHERE %s", ParseUtil.addBackQuote(objectEntity.getTableName()),
                 equalStr, whereStr);

@@ -7,13 +7,13 @@ package xyz.redrain.exception;
  * @version 1.0
  */
 
-public class PrimaryKeyNoExsitException extends Exception {
+public class PrimaryKeyNoExistException extends Exception {
 
-    public PrimaryKeyNoExsitException() {
+    public PrimaryKeyNoExistException() {
         super("primary key is null");
     }
 
-    public PrimaryKeyNoExsitException(String message) {
+    public PrimaryKeyNoExistException(String message) {
         super(message);
     }
 }
