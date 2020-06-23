@@ -8,7 +8,7 @@
        <dependency>
          <groupId>xyz.redrain</groupId>
          <artifactId>mybatis-help</artifactId>
-         <version>1.0.2</version>
+         <version>1.0.4</version>
        </dependency>
      ```  
 3. 使用mybatis的mapper接口方法
