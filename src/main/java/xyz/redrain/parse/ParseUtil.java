@@ -100,10 +100,7 @@ public class ParseUtil {
 
     public static String getEqualParams(PropertyEntity propertyEntity) {
 
-        return String.format(" %s = #{%s,%s} ",
-                addBackQuote(propertyEntity.getColumnName()),
-                propertyEntity.getPropertyName(),
-                getPropertyTypeStr(propertyEntity));
+        return getEqualParams(propertyEntity, null);
     }
 
 

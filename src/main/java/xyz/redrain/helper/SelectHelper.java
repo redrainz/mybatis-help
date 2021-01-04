@@ -3,7 +3,6 @@ package xyz.redrain.helper;
 import xyz.redrain.exception.PageParamIsNullException;
 import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.exception.PrimaryKeyNoExistException;
-import xyz.redrain.exception.SelectConditionNoExistException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
@@ -37,7 +36,7 @@ public class SelectHelper {
         Object param = params.get("param");
         Integer offset = (Integer) params.get("offset");
         Integer limit = (Integer) params.get("limit");
-        if (null == offset || null == limit || limit < 1) {
+        if (null == limit || limit < 1) {
             throw new PageParamIsNullException();
         }
         return getSelectSql(param, false, offset, limit);
@@ -78,11 +77,8 @@ public class SelectHelper {
     }
 
 
-    private String getSelectSql0(String headStr, String tableName, String whereSql, String limitStr) throws SelectConditionNoExistException {
+    private String getSelectSql0(String headStr, String tableName, String whereSql, String limitStr) {
 
-        if (limitStr == null && (whereSql == null || "".equals(whereSql.trim()))) {
-            throw new SelectConditionNoExistException();
-        }
         String sql = String.format("SELECT %s FROM %s", headStr, tableName);
         if (whereSql != null && !"".equals(whereSql.trim())) {
             sql += " WHERE " + whereSql;
