@@ -1,15 +1,10 @@
 package xyz.redrain;
 
+import org.apache.ibatis.annotations.*;
 import xyz.redrain.helper.DeleteHelper;
 import xyz.redrain.helper.InsertHelper;
 import xyz.redrain.helper.SelectHelper;
 import xyz.redrain.helper.UpdateHelper;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.List;
 
@@ -18,7 +13,6 @@ import java.util.List;
  *
  * @author RedRain
  * @version 1.0
-
  */
 public interface BaseMapper<T> {
 
@@ -53,5 +47,8 @@ public interface BaseMapper<T> {
 
     @SelectProvider(type = SelectHelper.class, method = "selectListByParamsPages")
     List<T> selectListByParamsPages(@Param("param") T param, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    @SelectProvider(type = SelectHelper.class, method = "countByParams")
+    long countByParams(T param);
 
 }

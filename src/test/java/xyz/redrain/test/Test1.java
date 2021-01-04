@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Date;
@@ -15,12 +16,12 @@ import java.util.List;
  *
  * @author RedRain
  * @version 1.0
-
  */
 
 
-public class Test {
+public class Test1 {
     private static SqlSessionFactory sqlSessionFactory = null;
+
     static {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("config.xml"));
@@ -29,7 +30,7 @@ public class Test {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void insertObj() {
 
         User user = new User();
@@ -43,9 +44,9 @@ public class Test {
         int a = userMapper.insertObj(user);
         sqlSession.commit();
         Assert.assertNotNull(user.getId());
-        }
+    }
 
-    @org.junit.Test
+    @Test
     public void insertObjSelective() {
 
         User user = new User();
@@ -75,7 +76,7 @@ public class Test {
     }
 
 
-    @org.junit.Test
+    @Test
     public void updateObjSelectiveById() {
 
         User user = before();
@@ -89,7 +90,7 @@ public class Test {
 
     }
 
-    @org.junit.Test
+    @Test
     public void updateObjById() {
 
         User user = before();
@@ -104,7 +105,7 @@ public class Test {
 
     }
 
-    @org.junit.Test
+    @Test
     public void deleteObjById() {
 
         User user = before();
@@ -118,7 +119,7 @@ public class Test {
 
     }
 
-    @org.junit.Test
+    @Test
     public void deleteObjByParams() {
 
         User user = new User();
@@ -133,7 +134,7 @@ public class Test {
 
     }
 
-    @org.junit.Test
+    @Test
     public void selectObjById() {
 
         User user = before();
@@ -148,7 +149,7 @@ public class Test {
         Assert.assertEquals(user.getUsername(), newUser.getUsername());
     }
 
-    @org.junit.Test
+    @Test
     public void selectObjByParams() {
         User user = new User();
         //user.setId(37);
@@ -171,7 +172,7 @@ public class Test {
     }
 
 
-    @org.junit.Test
+    @Test
     public void selectListByParams() {
 
         User user = new User();
@@ -186,8 +187,22 @@ public class Test {
         Assert.assertTrue(users.size() > 1);
     }
 
+    @Test
+    public void countByParams() {
 
-    @org.junit.Test
+        User user = new User();
+        user.setUsername("aassa");
+        //user.setPassword("a");
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        long count = userMapper.countByParams(user);
+        System.out.println(count);
+        Assert.assertTrue(count >= 1);
+    }
+
+
+    @Test
     public void selectListByParamsPages() {
 
         User user = new User();

@@ -9,6 +9,7 @@ import xyz.redrain.parse.ParseUtil;
 import xyz.redrain.parse.PropertyEntity;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -42,12 +43,20 @@ public class SelectHelper {
         return getSelectSql(param, false, offset, limit);
     }
 
+    public String countByParams(Object param) throws Exception {
+        return getSelectSql(param, objectEntity -> " COUNT(*) ", false, null, null);
+    }
+
     private String getSelectSql(Object param, boolean selectById, Integer offset, Integer limit) throws Exception {
+        return getSelectSql(param, ParseUtil::getJdbcParamsAndAlias, selectById, offset, limit);
+    }
+
+    private String getSelectSql(Object param, Function<ObjectEntity, String> headerFunction, boolean selectById, Integer offset, Integer limit) throws Exception {
         if (null == param) {
             throw new ParamIsNullException();
         }
         ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
-        String headerStr = ParseUtil.getJdbcParamsAndAlias(objectEntity);
+        String headerStr = headerFunction.apply(objectEntity);
         String tableName = ParseUtil.addBackQuote(objectEntity.getTableName());
         ObjectParse.delNullProperty(objectEntity);
 
