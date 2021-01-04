@@ -35,14 +35,14 @@ public class DeleteHelper {
         return getDeleteSql(param, false);
     }
 
-    private String getDeleteSql(Object param, boolean isId) throws Exception {
+    private String getDeleteSql(Object param, boolean deleteById) throws Exception {
 
         if (null == param) {
             throw new ParamIsNullException();
         }
 
         ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
-        String equalParams = isId ?
+        String equalParams = deleteById ?
                 objectEntity.getPropertyEntities().stream()
                         .filter(PropertyEntity::isId)
                         .filter(propertyEntity -> propertyEntity.getPropertyValue() != null)

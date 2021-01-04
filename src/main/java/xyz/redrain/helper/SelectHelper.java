@@ -50,26 +50,28 @@ public class SelectHelper {
         ObjectEntity objectEntity = ObjectParse.getObjectEntity(param);
         String headerStr = ParseUtil.getJdbcParamsAndAlias(objectEntity);
         String tableName = ParseUtil.addBackQuote(objectEntity.getTableName());
+        ObjectParse.delNullProperty(objectEntity);
+
         String whereSql;
         String limitStr = null;
-
-        ObjectParse.delNullProperty(objectEntity);
         if (selectById) {
             whereSql = objectEntity.getPropertyEntities().stream()
                     .filter(PropertyEntity::isId).findAny()
                     .map(ParseUtil::getEqualParams)
                     .orElseThrow(PrimaryKeyNoExistException::new);
         } else {
-
-            String paramName = limit != null && limit > 0 ? "param" : null;
-            if (offset != null && limit != null && limit > 0) {
-                limitStr = String.format(" LIMIT %d,%d ", offset, limit);
+            boolean hasLimit = limit != null && limit > 0;
+            if (hasLimit) {
+                if (offset != null) {
+                    limitStr = String.format(" LIMIT %d,%d ", offset, limit);
+                } else {
+                    limitStr = String.format(" LIMIT %d ", limit);
+                }
             }
+
             whereSql = objectEntity.getPropertyEntities().stream()
-                    .map(propertyEntity -> ParseUtil.getEqualParams(propertyEntity, paramName))
+                    .map(propertyEntity -> ParseUtil.getEqualParams(propertyEntity, hasLimit ? "param" : null))
                     .collect(Collectors.joining(" AND "));
-
-
         }
 
         return getSelectSql0(headerStr, tableName, whereSql, limitStr);

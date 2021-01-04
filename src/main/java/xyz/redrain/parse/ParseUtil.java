@@ -85,16 +85,16 @@ public class ParseUtil {
     }
 
 
-    public static String getEqualParams(PropertyEntity propertyEntity, String paramName) {
+    public static String getEqualParams(PropertyEntity propertyEntity, String paramPrefix) {
 
-        if (paramName != null && !"".equals(paramName.trim())) {
-            paramName += ".";
+        if (paramPrefix != null && !"".equals(paramPrefix.trim())) {
+            paramPrefix += ".";
         } else {
-            paramName = "";
+            paramPrefix = "";
         }
         return String.format(" %s = #{%s,%s} ",
                 addBackQuote(propertyEntity.getColumnName()),
-                paramName + propertyEntity.getPropertyName(),
+                paramPrefix + propertyEntity.getPropertyName(),
                 getPropertyTypeStr(propertyEntity));
     }
 
