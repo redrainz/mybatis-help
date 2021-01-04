@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
  *
  * @author RedRain
  * @version 1.0
-
  */
 
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

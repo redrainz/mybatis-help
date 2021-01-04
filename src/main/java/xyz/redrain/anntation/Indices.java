@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
  * @version 1.0
  */
 
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

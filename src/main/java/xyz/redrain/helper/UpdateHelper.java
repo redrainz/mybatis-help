@@ -8,7 +8,6 @@ import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
 import xyz.redrain.parse.PropertyEntity;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,22 +37,23 @@ public class UpdateHelper {
             ObjectParse.delNullProperty(objectEntity);
         }
 
-        String whereStr = objectEntity.getPropertyEntities().stream()
-                .filter(PropertyEntity::isId).findAny()
-                .map(ParseUtil::getEqualParams)
-                .orElseThrow(PrimaryKeyNoExistException::new);
-
-        String equalStr = objectEntity.getPropertyEntities().stream()
+        String setStr = objectEntity.getPropertyEntities().stream()
                 .filter(propertyEntity -> !propertyEntity.isId())
                 .filter(propertyEntity -> !propertyEntity.isUpdateSetNullFlag())
                 .map(ParseUtil::getEqualParams)
                 .collect(Collectors.joining(" , "));
 
-        if ("".equals(equalStr.trim())) {
+        if ("".equals(setStr.trim())) {
             throw new UpdateSetValueNoExistException();
         }
+
+        String whereStr = objectEntity.getPropertyEntities().stream()
+                .filter(PropertyEntity::isId).findAny()
+                .map(ParseUtil::getEqualParams)
+                .orElseThrow(PrimaryKeyNoExistException::new);
+
         return String.format("UPDATE %s SET %s WHERE %s", ParseUtil.addBackQuote(objectEntity.getTableName()),
-                equalStr, whereStr);
+                setStr, whereStr);
     }
 
 

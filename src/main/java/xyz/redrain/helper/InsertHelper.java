@@ -5,7 +5,6 @@ import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.parse.ObjectEntity;
 import xyz.redrain.parse.ObjectParse;
 import xyz.redrain.parse.ParseUtil;
-import xyz.redrain.parse.PropertyEntity;
 
 /**
  * Created by RedRain on 2018/11/16.

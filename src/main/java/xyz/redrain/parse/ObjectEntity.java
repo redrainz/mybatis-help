@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class ObjectEntity {
     private String tableName;
-    private List<String> indices;
     private List<PropertyEntity> propertyEntities;
 
     /**
@@ -29,7 +28,6 @@ public class ObjectEntity {
     boolean tableUseUnderlineStitching;
 
     public ObjectEntity() {
-        indices = new ArrayList<>();
         propertyEntities = new ArrayList<>();
     }
 
@@ -47,14 +45,6 @@ public class ObjectEntity {
 
     public void setPropertyEntities(List<PropertyEntity> propertyEntities) {
         this.propertyEntities = propertyEntities;
-    }
-
-    public List<String> getIndices() {
-        return indices;
-    }
-
-    public void setIndices(List<String> indices) {
-        this.indices = indices;
     }
 
     public boolean isPropertyUseUnderlineStitching() {

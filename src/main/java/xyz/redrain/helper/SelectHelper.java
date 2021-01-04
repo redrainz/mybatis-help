@@ -1,6 +1,5 @@
 package xyz.redrain.helper;
 
-import com.sun.org.apache.regexp.internal.RE;
 import xyz.redrain.exception.PageParamIsNullException;
 import xyz.redrain.exception.ParamIsNullException;
 import xyz.redrain.exception.PrimaryKeyNoExistException;
@@ -44,7 +43,7 @@ public class SelectHelper {
         return getSelectSql(param, false, offset, limit);
     }
 
-    private String getSelectSql(Object param, boolean isId, Integer offset, Integer limit) throws Exception {
+    private String getSelectSql(Object param, boolean selectById, Integer offset, Integer limit) throws Exception {
         if (null == param) {
             throw new ParamIsNullException();
         }
@@ -55,7 +54,7 @@ public class SelectHelper {
         String limitStr = null;
 
         ObjectParse.delNullProperty(objectEntity);
-        if (isId) {
+        if (selectById) {
             whereSql = objectEntity.getPropertyEntities().stream()
                     .filter(PropertyEntity::isId).findAny()
                     .map(ParseUtil::getEqualParams)
@@ -66,7 +65,6 @@ public class SelectHelper {
             if (offset != null && limit != null && limit > 0) {
                 limitStr = String.format(" LIMIT %d,%d ", offset, limit);
             }
-            ObjectParse.useIndices(objectEntity);
             whereSql = objectEntity.getPropertyEntities().stream()
                     .map(propertyEntity -> ParseUtil.getEqualParams(propertyEntity, paramName))
                     .collect(Collectors.joining(" AND "));

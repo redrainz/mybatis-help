@@ -33,12 +33,9 @@
     3. 非必填 `@Column` 为列名
     4. 非必填 `@Ignore`不映射
     5. 非必填 `@JavaType`设置Java类型
-    6. 非必填 `@Order`查询时属性的排序
-    7. 非必填 `@Indexs`设置索引
     
     ```java
         @Table("t_user")
-        @Indexs({"password", "password,username,`user_id`"})
         public class User {
             @Id()
             private Integer id;
