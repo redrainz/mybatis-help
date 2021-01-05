@@ -23,8 +23,7 @@
 <configuration>
 
     <plugins>
-        <plugin interceptor="xyz.redrain.test.MyInterceptor"></plugin>
-        <plugin interceptor="xyz.redrain.test.MyInterceptor2"></plugin>
+        <plugin interceptor="xyz.redrain.test.interceptor.MyInterceptor"/>
     </plugins>
 
 
@@ -42,8 +41,8 @@
         </environment>
     </environments>
 
-    <mappers >
-        <package name="xyz.redrain"/>
+    <mappers>
+        <package name="xyz.redrain.test.mapper"/>
     </mappers>
 
 </configuration>

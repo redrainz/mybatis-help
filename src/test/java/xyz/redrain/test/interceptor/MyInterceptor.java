@@ -1,4 +1,4 @@
-package xyz.redrain.test;
+package xyz.redrain.test.interceptor;
 
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
@@ -6,7 +6,6 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 
 import java.sql.Connection;
-import java.sql.Statement;
 import java.util.Properties;
 
 /**

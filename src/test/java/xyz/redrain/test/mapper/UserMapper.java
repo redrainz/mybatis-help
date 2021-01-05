@@ -1,6 +1,7 @@
-package xyz.redrain.test;
+package xyz.redrain.test.mapper;
 
 import xyz.redrain.BaseMapper;
+import xyz.redrain.test.model.User;
 
 /**
  * Created by RedRain on 2018/10/27.

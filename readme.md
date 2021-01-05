@@ -1,14 +1,14 @@
 ## mybatis-help
 
-1. 当使用属性映射为下划线模式时要求
-    1. mybatis:3.4.0+
-    2. mybatis-spring:1.3.0+
+1. 要求
+   1. mybatis:3.4.0+
+   2. mybatis-spring:1.3.0+
 2. maven引入
      ```xml
        <dependency>
          <groupId>xyz.redrain</groupId>
          <artifactId>mybatis-help</artifactId>
-         <version>1.0.4</version>
+         <version>1.0.5</version>
        </dependency>
      ```  
 3. 使用mybatis的mapper接口方法
@@ -77,4 +77,5 @@
          */
         boolean tableUseUnderlineStitching() default true;
     }
-   ```    
+   ```   
+8. 1.0.5 增加了 countByParams方法

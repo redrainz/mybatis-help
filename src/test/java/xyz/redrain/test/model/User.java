@@ -1,8 +1,7 @@
-package xyz.redrain.test;
+package xyz.redrain.test.model;
 
 import xyz.redrain.anntation.Column;
 import xyz.redrain.anntation.Ignore;
-import xyz.redrain.anntation.Indices;
 
 import java.util.Date;
 
@@ -12,7 +11,6 @@ import java.util.Date;
  * @author RedRain
  * @version 1.0
  */
-@Indices({"password", "password,username,`user_id`"})
 public class User {
 
     private Integer id;

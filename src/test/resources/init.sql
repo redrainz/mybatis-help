@@ -1,4 +1,4 @@
-CREATE TABLE `test`.`user`
+CREATE TABLE `user`
 (
     `id`       int(10)                                                NOT NULL AUTO_INCREMENT,
     `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `test`.`user`
   ROW_FORMAT = Dynamic;
 
 
-CREATE TABLE `test`.`user_info`
+CREATE TABLE `user_info`
 (
     `ID`        int(10)                                                NOT NULL AUTO_INCREMENT,
     `userName`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,

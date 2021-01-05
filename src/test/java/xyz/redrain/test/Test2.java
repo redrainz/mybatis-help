@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+import xyz.redrain.test.mapper.UserInfoMapper;
+import xyz.redrain.test.model.UserInfo;
 
 import java.io.IOException;
 import java.util.Date;
@@ -45,6 +47,7 @@ public class Test2 {
         UserInfoMapper userMapper = sqlSession.getMapper(UserInfoMapper.class);
         int a = userMapper.insertObj(user);
         sqlSession.commit();
+        System.out.println(a);
         Assert.assertNotNull(user.getId());
     }
 
@@ -214,7 +217,7 @@ public class Test2 {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserInfoMapper userMapper = sqlSession.getMapper(UserInfoMapper.class);
         List<UserInfo> users = userMapper.selectListByParamsPages(user, 0, 1);
-        System.out.println(user);
+        System.out.println(users);
         sqlSession.commit();
 
     }

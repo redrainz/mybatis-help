@@ -1,4 +1,4 @@
-package xyz.redrain.test;
+package xyz.redrain.test.model;
 
 import xyz.redrain.anntation.Ignore;
 import xyz.redrain.anntation.Table;
