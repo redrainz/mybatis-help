@@ -2,7 +2,6 @@
 
 1. 要求
    1. mybatis:3.4.0+
-   2. mybatis-spring:1.3.0+
 2. maven引入
      ```xml
        <dependency>
