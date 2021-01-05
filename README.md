@@ -12,15 +12,15 @@
        </dependency>
      ```  
 3. 使用mybatis的mapper接口方法
-     1. mapper.xml中namespace为mapper全限定类名
-    
+   1. mapper.xml中namespace为mapper全限定类名
+
      ```xml
      <mapper namespace="UserMapper" >
        <resultMap id="BaseResultMap" type="User" />
      ...
      </mapper>
      ```
-4. mapper 接口继承 
+4. mapper 接口继承
     ```java
     public interface UserMapper extends BaseMapper<User> {
 
@@ -28,12 +28,12 @@
     ```
 5. POJO对象与表映射
 
-    1. 非必填 主键属性名必须为id,可加上`@Id`注解
-    2. 非必填 `@Table`为表名
-    3. 非必填 `@Column` 为列名
+   1. 非必填 主键属性名必须为id,可加上`@Id`注解
+   2. 非必填 `@Table`为表名
+   3. 非必填 `@Column` 为列名
     4. 非必填 `@Ignore`不映射
     5. 非必填 `@JavaType`设置Java类型
-    
+
     ```java
         @Table("t_user")
         public class User {
@@ -50,7 +50,7 @@
         }
     ``` 
 6. mybatis与spring集成：
-    
+
     1. spring配置文档
         ```xml
         <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
