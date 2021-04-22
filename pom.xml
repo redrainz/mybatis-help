@@ -12,7 +12,7 @@
     <url>https://github.com/redrainz/mybatis-help</url>
 
     <properties>
-        <mybatis.version>3.5.0</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
     </properties>
     <dependencies>
         <dependency>
